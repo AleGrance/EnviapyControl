@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+            <!--Logo-->
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <!--Formulario cliente-->
+        <div class="formulario">
+            <form #loginForm="ngForm" (ngSubmit)="logIn()">
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" name="username" class="form-control" [(ngModel)]="usuario.user_name"
+                        placeholder="Ingresar usuario">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="user_password" id="password" class="form-control"
+                        [(ngModel)]="usuario.user_password" placeholder="Password">
+                </div>
+                <div class="form-group form-check">
+                    <!-- <input type="checkbox" class="form-check-input" (click)="showPassword()"> -->
+                    <!-- <label class="form-check-label">{{mostrarOcultarText}}</label> -->
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Acceder</button>
+                </div>
+            </form>
+        </div>
+              
+            </div>
+        </div>        
+    </div>
+    <div class="col-md-4"></div>
+</div>
+</div>
+

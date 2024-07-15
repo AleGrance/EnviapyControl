@@ -1,0 +1,75 @@
+<app-sub-nav-bar (clienteOpenModal)="openModal()"></app-sub-nav-bar>
+<table class="table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Razon social</th>
+        <th scope="col">RUC</th>
+        <th scope="col">Celular</th>
+
+        <th>...</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        @for (item of clientes; track $index) {
+            <tr>
+                <th scope="row">{{item.client_id}}</th>
+                <td>{{item.client_name}}</td>
+                <td>{{item.client_ruc}}</td>
+                <td>{{item.client_phone}}</td>
+
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#">Editar</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+  </table>
+
+<!-- Modal Cliente -->
+<div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo cliente</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #clienteForm="ngForm" (ngSubmit)="crearCliente()">
+          <div class="mb-3">
+            <label for="clientename" class="form-label">Nombre</label>
+            <input type="text" name="clientename" #clientename="ngModel" [(ngModel)]="clienteNuevo.client_name" class="form-control" id="clientename" aria-describedby="clientename">
+            
+          </div>
+          <div class="mb-3">
+            <label for="ruc" class="form-label">RUC</label>
+            <input type="text" name="ruc" #ruc="ngModel" [(ngModel)]="clienteNuevo.client_ruc" class="form-control" id="ruc" aria-describedby="ruc">
+            
+          </div>
+          <div class="mb-3">
+            <label for="clienteemail" class="form-label">Email</label>
+            <input type="email" name="clienteemail" #clienteemail="ngModel" [(ngModel)]="clienteNuevo.client_email" class="form-control" id="clienteemail" aria-describedby="clienteemail">
+            
+          </div>
+          <div class="mb-3">
+            <label for="clientephone" class="form-label">Celular</label>
+            <input type="text" name="clientephone" #clientephone="ngModel" [(ngModel)]="clienteNuevo.client_phone" class="form-control" id="clientephone" aria-describedby="clientephone">
+            
+          </div>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>

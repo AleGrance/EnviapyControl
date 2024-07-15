@@ -1,0 +1,137 @@
+<app-sub-nav-bar (usuarioOpenModal)="openModal()"></app-sub-nav-bar>
+<table class="table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">User Name</th>
+        <th scope="col">User Fullname</th>
+        <th scope="col">Email</th>
+        <th scope="col">Rol</th>
+
+        <th>...</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        @for (item of usuarios; track $index) {
+            <tr>
+                <th scope="row">{{item.user_id}}</th>
+                <td>{{item.user_name}}</td>
+                <td>{{item.user_fullname}}</td>
+                <td>{{item.user_email}}</td>
+                <td>{{item.Role!.role_name}}</td>
+
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modificarUsuarioModal" (click)="modificarUsuario(item)">Editar</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+  </table>
+
+  <!-- Modal Usuario -->
+<div class="modal fade" id="usuarioModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo usuario</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #usuarioForm="ngForm" (ngSubmit)="crearUsuario()">
+          <div class="mb-3">
+            <label for="username" class="form-label">User name</label>
+            <input type="text" name="username" #username="ngModel" [(ngModel)]="usuarioNuevo.user_name" class="form-control" id="username" aria-describedby="username">
+            
+          </div>
+          <div class="mb-3">
+            <label for="userfullname" class="form-label">User fullname</label>
+            <input type="text" name="userfullname" #userfullname="ngModel" [(ngModel)]="usuarioNuevo.user_fullname" class="form-control" id="userfullname" aria-describedby="userfullname">
+            
+          </div>
+          <div class="mb-3">
+            <label for="useremail" class="form-label">User email</label>
+            <input type="email" name="useremail" #useremail="ngModel" [(ngModel)]="usuarioNuevo.user_email" class="form-control" id="useremail" aria-describedby="useremail">
+            
+          </div>
+          <div class="mb-3">
+            <label for="userpassword" class="form-label">Password</label>
+            <input type="password" name="userpassword" #userpassword="ngModel" [(ngModel)]="usuarioNuevo.user_password" class="form-control" id="userpassword" class="form-control" id="userpassword">
+          </div>
+
+          <div class="mb-3">
+            <label for="rol" class="form-label">Rol</label>
+            <ng-select name="rol" id="rol" [(ngModel)]="usuarioNuevo.role_id">
+              @for (item of roles; track item) {
+                  <ng-option [value]="item.role_id">{{item.role_name}}</ng-option>
+              }
+            </ng-select>
+          </div>
+
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- Modal Modificar usuario -->
+<div class="modal fade" id="modificarUsuarioModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar usuario</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #modificarUsuarioForm="ngForm" (ngSubmit)="guardarCambios()">
+          
+          <div class="mb-3">
+            <label for="usernameModificar" class="form-label">User name</label>
+            <input type="text" name="usernameModificar" #usernameModificar="ngModel" [(ngModel)]="usuarioModificado.user_name" class="form-control" id="usernameModificar" aria-describedby="usernameModificar">
+            
+          </div>
+          <div class="mb-3">
+            <label for="userfullnameModificar" class="form-label">User fullname</label>
+            <input type="text" name="userfullnameModificar" #userfullnameModificar="ngModel" [(ngModel)]="usuarioModificado.user_fullname" class="form-control" id="userfullnameModificar" aria-describedby="userfullnameModificar">
+            
+          </div>
+          <div class="mb-3">
+            <label for="useremailModificar" class="form-label">User email</label>
+            <input type="email" name="useremailModificar" #useremailModificar="ngModel" [(ngModel)]="usuarioModificado.user_email" class="form-control" id="useremailModificar" aria-describedby="useremailModificar">
+            
+          </div>
+          <div class="mb-3">
+            <label for="userpasswordModificar" class="form-label">Password</label>
+            <input type="password" name="userpasswordModificar" #userpasswordModificar="ngModel" [(ngModel)]="usuarioModificado.user_password" class="form-control" id="userpasswordModificar" class="form-control" id="userpasswordModificar">
+          </div>
+
+          <div class="mb-3">
+            <label for="rolModificar" class="form-label">Rol</label>
+            <ng-select name="rolModificar" id="rolModificar" [(ngModel)]="usuarioModificado.role_id">
+              @for (item of roles; track item) {
+                  <ng-option [value]="item.role_id">{{item.role_name}}</ng-option>
+              }
+            </ng-select>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>

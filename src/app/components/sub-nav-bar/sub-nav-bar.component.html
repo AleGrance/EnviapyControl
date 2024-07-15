@@ -1,0 +1,17 @@
+<nav class="navbar bg-color-lightblue">
+    <div class="container-fluid">
+      <a class="navbar-brand color-white">{{title}}</a>
+      <form class="d-flex" role="search">
+        @if (btnContadores) {
+          <button class="btn btn-sm btn-outline-light" type="button" (click)="emitContador()">Agregar nuevos {{title.toLowerCase()}}</button>
+        }
+        @if (btnClientes) {
+          <button class="btn btn-sm btn-outline-light" type="button" (click)="emitCliente()">Agregar nuevos {{title.toLowerCase()}}</button>
+        }
+        @if (btnUsuarios) {
+          <button class="btn btn-sm btn-outline-light" type="button" (click)="emitUsuario()">Agregar nuevos {{title.toLowerCase()}}</button>
+        }
+      </form>
+    </div>
+</nav>
+

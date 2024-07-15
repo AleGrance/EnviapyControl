@@ -1,0 +1,158 @@
+<app-sub-nav-bar (contadorOpenModal)="openModal()"></app-sub-nav-bar>
+<table class="table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Fecha Ult. Envio</th>
+        <th scope="col">Enviados</th>
+        <th scope="col">Puerto</th>
+        <th scope="col">WEB URL</th>
+        <th scope="col">WWA URL</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Estado</th>
+        <th>...</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        @for (item of contadores; track $index) {
+            <tr>
+                <th scope="row">{{item.counter_id}}</th>
+                <td>{{item.counter_date | date : 'dd-MM-yyyy'}}</td>
+                <td>{{item.counter_sent}}</td>
+                <td>{{item.counter_port_wwa}}</td>
+                <td>{{item.counter_web_url}}</td>
+                <td>{{item.counter_wwa_url}}</td>
+                <td class="bg-color-purple">{{item.User?.user_fullname}}</td>
+                <td class="bg-color-green">{{item.Client!.client_name}}</td>
+                <td>{{item.counter_status == 1 ? 'Activo' : 'Inactivo'}}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modificarContadorModal" (click)="modificarContador(item)">Editar</a></li>
+                          <li><a class="dropdown-item" (click)="cambiarEstado(item.counter_id!, 1)">Activar</a></li>
+                          <li><a class="dropdown-item" (click)="cambiarEstado(item.counter_id!, 0)">Desactivar</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+  </table>
+
+  <!-- Modal Nuevo contador -->
+<div class="modal fade" id="contadorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo contador</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #contadorForm="ngForm" (ngSubmit)="crearContador()">
+          <div class="mb-3">
+            <label for="port" class="form-label">Puerto</label>
+            <input type="text" name="port" #port="ngModel" [(ngModel)]="contadorNuevo.counter_port_wwa" class="form-control" id="port" aria-describedby="port">
+            
+          </div>
+
+          <div class="mb-3">
+            <label for="weburl" class="form-label">WEB Url</label>
+            <input type="text" name="weburl" #weburl="ngModel" [(ngModel)]="contadorNuevo.counter_web_url" class="form-control" id="weburl" aria-describedby="weburl">
+            
+          </div>
+
+          <div class="mb-3">
+            <label for="wwaurl" class="form-label">WAA Url</label>
+            <input type="text" name="wwaurl" #wwaurl="ngModel" [(ngModel)]="contadorNuevo.counter_wwa_url" class="form-control" id="wwaurl" aria-describedby="wwaurl">
+            
+          </div>
+
+          <div class="mb-3">
+            <label for="cliente" class="form-label">Cliente</label>
+            <ng-select name="cliente" id="cliente" [(ngModel)]="contadorNuevo.client_id">
+              @for (item of clientes; track item) {
+                  <ng-option [value]="item.client_id">{{item.client_name}}</ng-option>
+              }
+            </ng-select>
+          </div>
+
+          <div class="mb-3">
+            <label for="usuario" class="form-label">Usuario</label>
+            <ng-select name="usuario" id="usuario" [(ngModel)]="contadorNuevo.user_id">
+              @for (item of usuarios; track item) {
+                  <ng-option [value]="item.user_id">{{item.user_name}}</ng-option>
+              }
+            </ng-select>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+  <!-- Modal Modificar contador -->
+  <div class="modal fade" id="modificarContadorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar contador</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #modificarContadorForm="ngForm" (ngSubmit)="guardarCambios()">
+            <div class="mb-3">
+              <label for="portModificar" class="form-label">Puerto</label>
+              <input type="text" name="portModificar" #portModificar="ngModel" [(ngModel)]="contadorModificado.counter_port_wwa" class="form-control" id="portModificar" aria-describedby="portModificar">
+              
+            </div>
+
+            <div class="mb-3">
+              <label for="weburlModificar" class="form-label">WEB Url</label>
+              <input type="text" name="weburlModificar" #weburlModificar="ngModel" [(ngModel)]="contadorModificado.counter_web_url" class="form-control" id="weburlModificar" aria-describedby="weburlModificar">
+              
+            </div>
+  
+            <div class="mb-3">
+              <label for="wwaurlModificar" class="form-label">WAA Url</label>
+              <input type="text" name="wwaurlModificar" #wwaurlModificar="ngModel" [(ngModel)]="contadorModificado.counter_wwa_url" class="form-control" id="wwaurlModificar" aria-describedby="wwaurlModificar">
+              
+            </div>
+  
+            <div class="mb-3">
+              <label for="clienteModificar" class="form-label">Cliente</label>
+              <ng-select name="clienteModificar" id="clienteModificar" [(ngModel)]="contadorModificado.client_id">
+                @for (item of clientes; track item) {
+                    <ng-option [value]="item.client_id">{{item.client_name}}</ng-option>
+                }
+              </ng-select>
+            </div>
+  
+            <div class="mb-3">
+              <label for="usuarioModificar" class="form-label">Usuario</label>
+              <ng-select name="usuarioModificar" id="usuarioModificar" [(ngModel)]="contadorModificado.user_id">
+                @for (item of usuarios; track item) {
+                    <ng-option [value]="item.user_id">{{item.user_name}}</ng-option>
+                }
+              </ng-select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Guardar</button>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
