@@ -58,7 +58,7 @@ export class ContadoresComponent implements OnInit {
 
   obtenerContadores() {
     this.apiContador.getContador<Contador[]>('counters').subscribe((result) => {
-      console.log('contadores', result);
+      // console.log('contadores', result);
       this.contadores = result;
     });
   }
@@ -76,7 +76,7 @@ export class ContadoresComponent implements OnInit {
   }
 
   openModal() {
-    console.log('open modal');
+    // console.log('open modal');
 
     const modalElement = this.el.nativeElement.querySelector('#contadorModal');
     const bootstrapModal = new bootstrap.Modal(modalElement);
@@ -84,12 +84,12 @@ export class ContadoresComponent implements OnInit {
   }
 
   crearContador() {
-    console.log(this.contadorNuevo);
+    // console.log(this.contadorNuevo);
 
     this.apiContador
       .postContador<Contador>('counters', this.contadorNuevo)
       .subscribe((result) => {
-        console.log(result);
+        // console.log(result);
 
         if (result.status == ResponseStatus.SUCCESS) {
           this.toastr.success('Contador creado correctamente', 'Enviapy Alert');
@@ -109,7 +109,7 @@ export class ContadoresComponent implements OnInit {
   }
 
   modificarContador(contador: Contador) {
-    console.log('contador a modificar', contador);
+    // console.log('contador a modificar', contador);
     this.contadorModificadoId = contador.counter_id!;
 
     this.contadorModificado = {
@@ -133,7 +133,10 @@ export class ContadoresComponent implements OnInit {
         // console.log(result);
 
         if (result.status == ResponseStatus.SUCCESS) {
-          this.toastr.success('Contador modificado correctamente', 'Enviapy Alert');
+          this.toastr.success(
+            'Contador modificado correctamente',
+            'Enviapy Alert'
+          );
           this.obtenerContadores();
           this.contadorNuevo = {
             counter_port_wwa: 3001,
@@ -152,14 +155,18 @@ export class ContadoresComponent implements OnInit {
   cambiarEstado(idContador: number, status: number) {
     this.contadorModificado.counter_status = status;
 
-    console.log(this.contadorModificado)
+    // console.log(this.contadorModificado);
 
-    this.apiContador.patchContador('counters/' + idContador, this.contadorModificado)
+    this.apiContador
+      .patchContador('counters/' + idContador, this.contadorModificado)
       .subscribe((result) => {
-        console.log(result);
+        // console.log(result);
 
         if (result.status == ResponseStatus.SUCCESS) {
-          this.toastr.success('Contador modificado correctamente', 'Enviapy Alert');
+          this.toastr.success(
+            'Contador modificado correctamente',
+            'Enviapy Alert'
+          );
           this.obtenerContadores();
           this.contadorNuevo = {
             counter_port_wwa: 3001,
@@ -172,7 +179,6 @@ export class ContadoresComponent implements OnInit {
             'Enviapy Alert'
           );
         }
-
-      })
+      });
   }
 }

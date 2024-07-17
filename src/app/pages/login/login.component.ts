@@ -4,7 +4,6 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthResult } from '../../common/interfaces/auth-result';
-import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +13,8 @@ import { LoginService } from '../../services/login.service';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
+  public token: string = '';
+
   public usuario = {
     user_name: '',
     user_password: '',
@@ -22,27 +23,27 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService,
-    private loginService: LoginService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.isLogged();
+    this.checkUserToken();
   }
 
-  isLogged() {
-    this.loginService.isLogged.subscribe((result: boolean) => {
-      if (result) {
-        this.router.navigate(['/contadores']);
-      }
-    });
+  checkUserToken() {
+    this.token = localStorage.getItem('token')!;
+
+    // Habilitar el navbar si hay un token en el localstorage
+    if (this.token) {
+      this.router.navigate(['/contadores']);
+    }
   }
 
   logIn() {
     this.authService.logIn('auth', this.usuario).subscribe({
       next: (result: AuthResult) => {
         const { token, user_fullname, user_id, role_id, auth } = result;
-        console.log(result);
+        // console.log(result);
 
         localStorage.setItem('token', token);
         localStorage.setItem('user_name', user_fullname);
@@ -50,7 +51,7 @@ export class LoginComponent implements OnInit {
 
         if (auth) {
           this.toastr.success('Acceso correcto', 'Enviapy Alert');
-          this.loginService.setLogged(true);
+          this.authService.setAuth(true);
           this.router.navigate(['/contadores']);
         } else {
         }
