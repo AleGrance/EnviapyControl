@@ -32,22 +32,19 @@ export class AppComponent implements OnInit {
   }
 
   checkAuth() {
-    this.token = localStorage.getItem('token')!;
-
     // Suscribe al obs isAuth que cambia de estado al hacer clic en el btn logout
     this.authService.isAuth.subscribe((result: boolean) => {
       if (result) {
         this.showNavBar = true;
       } else {
-        this.showNavBar = false;
+        this.token = localStorage.getItem('authToken')!;
+
+        if (!this.token) {
+          this.showNavBar = false;
+        } else {
+          this.showNavBar = true;
+        }
       }
     });
-
-    // Checkear el token al recargar la pagina
-    if (this.token) {
-      this.showNavBar = true;
-    } else {
-      this.showNavBar = false;
-    }
   }
 }
